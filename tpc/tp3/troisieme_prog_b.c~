@@ -1,0 +1,21 @@
+# include <stdio.h>
+int main()
+{
+
+int age = 0;
+int majeur= 0;
+printf("Tapez votre age:");
+scanf("%d",&age);
+majeur = age >= 18;
+
+if (majeur)
+{
+	printf("Vous êtes majeur\n");
+}
+else
+{
+	printf("vous êtes mineur\n");
+}
+
+return 0;
+}
