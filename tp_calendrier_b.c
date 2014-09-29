@@ -1,4 +1,4 @@
-# include <stdio.h> // test github
+# include <stdio.h>
 int main () {
 
 int annee = 0;
