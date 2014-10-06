@@ -1,4 +1,4 @@
-# include <stdio.h> //modifier pour github
+# include <stdio.h>
 int main () {
 
 int annee = 0;
