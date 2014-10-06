@@ -42,7 +42,7 @@ printf("\b \n\n"); // "\b " Remplacement du dernier caractère
 for (i=0 ; i<NB_VAL-1 ; i++)
 {
 	printf ("%d,", tab_val[i]);
-	tab_val[-1]=0;
+	tab_val[-1]=0; // i=0 donc la boucle recommence
 }*/
 
 //============================================================================
