@@ -1,14 +1,15 @@
 # include <stdio.h>
 # include <string.h>
+# include <stdlib.h>
 # define TAILLE_MAX 100
-//==============================================================================================
+//============================================================================================
 //Fonction voyelles
-//==============================================================================================
+//============================================================================================
 char * voyelles (const char *chaine)//char* pointeur sur char
 {
 	int i=0;
 	int j=0;
-	char voy[TAILLE_MAX+1];
+	char *voy=malloc((strlen(chaine)+1)*sizeof(char));
 	for (i=0;i<strlen(chaine);i++)
 		{
 		if (chaine[i]=='a' || chaine[i]=='e' || chaine[i]=='i' || chaine[i]=='o' || chaine[i]=='u' || chaine[i]=='y')
@@ -21,9 +22,9 @@ char * voyelles (const char *chaine)//char* pointeur sur char
 	return voy;
 	// retourne une adresse car un tableau est l'adresse du debut du tableau
 }
-//==============================================================================================
+//============================================================================================
 //Fonction main
-//==============================================================================================
+//============================================================================================
 int main()
 {
 	char chaine[TAILLE_MAX+1];
@@ -35,5 +36,6 @@ int main()
 	chaine_voy=voyelles(chaine);// stock le retour dans un pointeur = tableaux
 	printf ("Les voyelles utiliser sont: %s\n",chaine_voy);
 	printf ("Nombre de voyelles:%ld\n",strlen(chaine_voy));
+	free (chaine_voy);
 	return 0;
 }
