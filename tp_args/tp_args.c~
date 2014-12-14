@@ -1,0 +1,14 @@
+#include <stdio.h>
+
+int main (int argc,char **argv)
+{
+	int i=0;
+	printf("Je récuère %d arguments\n", argc-1);
+	//argc= nb argument +1 pour le nom de l'executable
+	//afichage non exe+args
+	for(i=0;i<argc;i++)
+	{
+	printf("Argument %d : %s\n",i,argv[i]);
+	}
+return 0;
+}
