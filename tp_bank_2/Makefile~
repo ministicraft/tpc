@@ -1,0 +1,8 @@
+bank.exe:main.o fonctions.o
+	gcc main.o fonctions.o -o bank.exe
+main.o:main.c bank.h
+	gcc -c main.c
+fonctions.o:fonctions.c bank.h
+	gcc -c fonctions.c
+clean:
+	rm *.o bank.exe

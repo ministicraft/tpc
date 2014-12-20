@@ -1,0 +1,117 @@
+#include "bank.h"
+
+
+//Fonctions Ajout d'un client
+
+void ajout(Client* *ptab_client,int *pnb_client)
+{
+	//Prologue
+	Client *tab_client=*ptab_client;
+	int nb_client=*pnb_client;
+
+	tab_client=realloc(tab_client,(nb_client+1)*sizeof(Client));
+		printf("Veuillez renseigner votre nom: ");
+
+			char chaine_nom[TAILLE_MAX]={0};
+			fgets ( chaine_nom, TAILLE_MAX+1, stdin);
+			if (chaine_nom[strlen(chaine_nom)-1]=='\n') chaine_nom[strlen(chaine_nom)-1]='\0';
+
+				tab_client[nb_client].nom=malloc((strlen(chaine_nom)+1)*sizeof(char));
+			strcpy(tab_client[nb_client].nom,chaine_nom);
+	
+		printf("Veuillez renseigner votre prénom: ");
+
+			char chaine_prenom[TAILLE_MAX]={0};
+			fgets ( chaine_prenom, TAILLE_MAX+1, stdin);
+			if (chaine_prenom[strlen(chaine_prenom)-1]=='\n') chaine_prenom[strlen(chaine_prenom)-1]='\0';
+
+				tab_client[nb_client].prenom=malloc((strlen(chaine_prenom)+1)*sizeof(char));
+				strcpy(tab_client[nb_client].prenom,chaine_prenom);
+
+		printf("Veuillez renseigner le montant du premier apport: ");
+			scanf("%f",&tab_client[nb_client].solde);
+
+	//Epilogue
+	*ptab_client=tab_client;
+	*pnb_client=nb_client+1;
+}
+
+//Trouver un client
+void find(Client** ptab_client, int nb_client)
+{
+	//Prologue
+	Client *tab_client=*ptab_client;
+
+	int vrai=0;
+	int i=0;
+
+	printf("Saisir le nom du client à trouver: ");
+		char chaine_nom[TAILLE_MAX]={0};
+		fgets ( chaine_nom, TAILLE_MAX+1, stdin);
+		if (chaine_nom[strlen(chaine_nom)-1]=='\n') chaine_nom[strlen(chaine_nom)-1]='\0';
+
+	printf("Saisir le prenom du client à trouver: ");
+		char chaine_prenom[TAILLE_MAX]={0};
+		fgets ( chaine_prenom, TAILLE_MAX+1, stdin);
+		if (chaine_prenom[strlen(chaine_prenom)-1]=='\n') chaine_prenom[strlen(chaine_prenom)-1]='\0';
+
+		for(i=0; i<nb_client ; i++)
+		{
+			vrai=0;
+			if (!strcmp(chaine_nom,tab_client[i].nom)) 
+			{
+				vrai++;
+			}
+			if (!strcmp(chaine_prenom,tab_client[i].prenom)) 
+			{
+				vrai++;
+			}
+			if (vrai==2) break;
+		}
+	if (vrai==2)
+			{
+				affichage_client(tab_client[i]);
+			}
+	pause();
+}
+//Affichage client
+void affichage_client(Client client)
+{
+	printf("Nom du client: %s\n",client.nom);
+	printf("Prénom du client: %s\n",client.prenom);
+	printf("Solde du client: %f\n",client.solde);
+}
+//Afficher tous les clients
+void all_client(Client** ptab_client,int nb_client)
+{
+	Client *tab_client=*ptab_client;
+	int i=0;
+	for (i=0; i<nb_client ; i++)
+	{
+	affichage_client(tab_client[i]);
+	printf("\n");
+	}
+	pause();
+}
+//Menu
+int menu()
+{
+	int choix=0;
+	printf("Choisiser se que vous voulez faire:\n");
+	printf("1. Ajoutez un client\n");
+	printf("2. Cherchez un client\n");
+	printf("3. Affichez tous les clients \n");
+	printf("4. Effectuez un virement\n");
+	printf("5. Quitter\n");
+	printf("Votre choix: ");	
+	scanf("%d",&choix);
+	getchar();
+	printf("\n");
+	return choix;
+}
+//Pause
+void pause ()
+{
+	printf("Appuyer sur une touche pour continuer\n");
+	getchar();
+}
