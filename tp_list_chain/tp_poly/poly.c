@@ -24,15 +24,6 @@ void P_AjoutM (float coef, int puissance, struct monome **tete)
 	newMonome->suiv=*tete;
 	*tete = newMonome;
 }
-struct monome* AjoutM (float coef, int puissance, struct monome *tete)
-{
-	struct monome * newMonome = NULL;
-	newMonome=malloc(sizeof(struct monome));
-	newMonome->c=coef;
-	newMonome->e=puissance;
-	newMonome->suiv=tete;
-	return newMonome;
-}
 struct monome* ajout_queue (float coef, int puissance, struct monome *queue)
 {
 	struct monome * newMonome = NULL;
@@ -45,31 +36,60 @@ struct monome* ajout_queue (float coef, int puissance, struct monome *queue)
 	}
 	return newMonome;
 }
-void compare (newMonome, struct monome *tete)
+void AjoutM (float coef, int puissance, struct monome **tete)
 {
-	struct monome *less = NULL;
-	struct monome *up = NULL;
-	struct monome *temp = tete;
+	struct monome *temp = *tete;
+	struct monome *precedent = NULL;
+	if (temp == NULL)
+	{
+		P_AjoutM (coef, puissance, &*tete);
+		printf("Done4\n");
+		return;
+	}
+	if (puissance > temp->e)
+	{
+		struct monome * newMonome = NULL;
+		newMonome=malloc(sizeof(struct monome));
+		newMonome->c=coef;
+		newMonome->e=puissance;
+		newMonome->suiv= *tete;
+		*tete = newMonome;
+		printf("Done1\n");
+		return;
+		}
 	while(temp != NULL)
 	{
-		if (newMonome->e >= temp->e)
+		if (puissance == temp->e) 
 		{
-			less=temp;
+			temp->c = temp->c + coef;
+			printf("Done2\n");
 			break;
 		}
-		else if (temp->suiv = NULL) 
+		else if (puissance > temp->e && puissance < precedent->e)
 		{
-			up=temp;
+			struct monome * newMonome = NULL;
+			newMonome=malloc(sizeof(struct monome));
+			newMonome->c=coef;
+			newMonome->e=puissance;
+			newMonome->suiv=temp;
+			precedent->suiv=newMonome;
+			printf("Done3\n");
+			printf("%d\n%d\n", temp->e, puissance);
 			break;
 		}
-	}
-	if (less != NULL)
-	{
-		F_AjoutM (4.5, 8, tete);
-	}
-	else if (up != NULL;)
-	{
-		ajout_queue (7.3, 3, queue);
+		else if (temp->suiv == NULL)
+		{
+			struct monome * newMonome = NULL;
+			newMonome=malloc(sizeof(struct monome));
+			newMonome->c=coef;
+			newMonome->e=puissance;
+			newMonome->suiv=NULL;
+			temp->suiv=newMonome;
+			printf("Done5");
+			break;
+		}
+		precedent = temp;
+		temp = temp->suiv;
 	}
 }
 void parcours (struct monome *tete)
@@ -84,7 +104,11 @@ void parcours (struct monome *tete)
 int main()
 {
 	struct monome *tete = NULL;
-	P_AjoutM (4.5, 8, &tete);
-	P_AjoutM (7.3, 3, &tete);
+	AjoutM (1, 3, &tete);
+	AjoutM (3, 7, &tete);
+	AjoutM (4, 2, &tete);
+	AjoutM (5, 3, &tete);
+	AjoutM (2, 8, &tete);
+	AjoutM (6, 5, &tete);
 	parcours (tete);
 }
