@@ -43,7 +43,7 @@ void AjoutM (float coef, int puissance, struct monome **tete)
 	if (temp == NULL)
 	{
 		P_AjoutM (coef, puissance, &*tete);
-		printf("Done4\n");
+		//printf("Done4\n");
 		return;
 	}
 	if (puissance > temp->e)
@@ -54,7 +54,7 @@ void AjoutM (float coef, int puissance, struct monome **tete)
 		newMonome->e=puissance;
 		newMonome->suiv= *tete;
 		*tete = newMonome;
-		printf("Done1\n");
+		//printf("Done1\n");
 		return;
 		}
 	while(temp != NULL)
@@ -62,7 +62,7 @@ void AjoutM (float coef, int puissance, struct monome **tete)
 		if (puissance == temp->e) 
 		{
 			temp->c = temp->c + coef;
-			printf("Done2\n");
+			//printf("Done2\n");
 			break;
 		}
 		else if (puissance > temp->e && puissance < precedent->e)
@@ -73,7 +73,7 @@ void AjoutM (float coef, int puissance, struct monome **tete)
 			newMonome->e=puissance;
 			newMonome->suiv=temp;
 			precedent->suiv=newMonome;
-			printf("Done3\n");
+			//printf("Done3\n");
 			printf("%d\n%d\n", temp->e, puissance);
 			break;
 		}
@@ -85,7 +85,7 @@ void AjoutM (float coef, int puissance, struct monome **tete)
 			newMonome->e=puissance;
 			newMonome->suiv=NULL;
 			temp->suiv=newMonome;
-			printf("Done5");
+			//printf("Done5");
 			break;
 		}
 		precedent = temp;
@@ -101,14 +101,136 @@ void parcours (struct monome *tete)
 		temp = temp->suiv;
 	}
 }
+void saisie_monome (int *coef, int *degre)
+{
+	int out_degre = 0;
+	int out_coef = 0;
+	printf("Ajout d'un monome à la chaine\n");
+	printf("Veuillez saisir le degré du monome.\nDegre: ");
+	scanf("%d",degre);
+	printf("\nVeuillez saisir le coeficient du monome.\nCoef: ");
+	scanf("%d",coef);
+	printf("\n");
+}
+int menu()
+{
+	int choix=0;
+	printf("Choisiser se que vous voulez faire:\n");
+	printf("1. Ajout d'un Monome au polynome\n");
+	printf("2. Addition de polynome\n");
+	printf("3. Multiplication de polynome\n");
+	printf("4. Afficher le polynome\n");
+	printf("5. Quitter\n");
+	printf("Votre choix: ");	
+	scanf("%d",&choix);
+	getchar();
+	printf("\n");
+	return choix;
+}
+void ADD (struct monome *A, struct monome *B, struct monome **C)
+{	
+	struct monome * temp_A = A;
+	struct monome * temp_B = B;
+	while (temp_A != NULL)
+	{
+		AjoutM (temp_A->c, temp_A->e, &temp_B);
+		temp_A = temp_A->suiv;
+	}
+	*C = temp_B;
+}
+void MUL (struct monome *A, struct monome *B, struct monome **C)
+{
+	struct monome * temp_A = A;
+	struct monome * temp_B = B;
+	
+	while (temp_A != NULL)
+	{
+		temp_B = B;
+		while (temp_B != NULL)
+		{
+			AjoutM (temp_A->c * temp_B->c, temp_A->e + temp_B->e, C);
+			temp_B = temp_B->suiv;
+		}
+		temp_A = temp_A->suiv;
+	}
+}
 int main()
 {
 	struct monome *tete = NULL;
-	AjoutM (1, 3, &tete);
-	AjoutM (3, 7, &tete);
-	AjoutM (4, 2, &tete);
-	AjoutM (5, 3, &tete);
-	AjoutM (2, 8, &tete);
-	AjoutM (6, 5, &tete);
-	parcours (tete);
+	struct monome *A = NULL;
+	struct monome *B = NULL;
+	struct monome *C = NULL;
+	int degre = 0;
+	int coef = 0;
+	int choix = 0;
+	do
+	{ //Boucle pour recommencer le programme tant que l'utilisateur n'a pas choisie de quitter
+		choix=menu(); // Choix du menu
+		switch (choix)
+		{
+			case 1:
+				saisie_monome (&coef, &degre);
+				printf("%d\n%d\n",degre,coef);
+				AjoutM (coef, degre, &tete);
+				break;
+			case 2:
+				printf("Saisie du premier ploynome.\n");
+				printf("Saisir un coeficient nul pour arrêter la saisie\n\n");
+				do //Saisie du premier polynome
+				{
+					saisie_monome(&coef, &degre);
+					if (coef != 0) AjoutM (coef, degre, &A);
+				} while (coef != 0);
+				printf("\n");
+				parcours (A);
+				printf("\n");
+				printf("Saisie du deuxième ploynome\n");
+				printf("Saisir un coeficient nul pour arrêter la saisie\n\n");
+				do //Saisie du deuxième polynome
+				{
+					saisie_monome(&coef, &degre);
+					if (coef != 0) AjoutM (coef, degre, &B);
+				} while (coef != 0);
+				printf("\n");
+				parcours (B);
+				printf("\n");
+				ADD (A, B, &C);
+				parcours (C);
+				break;
+			case 3:
+				printf("Saisie du premier ploynome.\n");
+				printf("Saisir un coeficient nul pour arrêter la saisie\n\n");
+				do //Saisie du premier polynome
+				{
+					saisie_monome(&coef, &degre);
+					if (coef != 0) AjoutM (coef, degre, &A);
+				} while (coef != 0);
+				printf("\n");
+				parcours (A);
+				printf("\n");
+				printf("Saisie du deuxième ploynome\n");
+				printf("Saisir un coeficient nul pour arrêter la saisie\n\n");
+				do //Saisie du deuxième polynome
+				{
+					saisie_monome(&coef, &degre);
+					if (coef != 0) AjoutM (coef, degre, &B);
+				} while (coef != 0);
+				printf("\n");
+				parcours (B);
+				printf("\n");
+				MUL (A, B, &C);
+				parcours (C);
+				break;
+			case 4:
+				parcours (tete);
+			case 5:
+				break;
+			default:
+				printf("Votre choix n'est pas valide.");
+		}
+		printf("Appuyer sur une touche pour continuer\n");
+		getchar();
+	} while (choix != 5);
+
+return 0;
 }
