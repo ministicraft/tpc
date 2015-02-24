@@ -1,11 +1,17 @@
 # include <stdio.h>
 # include <stdlib.h>
+
+//Définition d'un monome a insérer dans une liste chainé
+
 struct monome
 {
 	float c;
 	int e;
 	struct monome * suiv;
 };
+
+//Première fonction d'ajout d'un monome (inutile actuellement)
+/*
 struct monome* F_AjoutM (float coef, int puissance, struct monome *tete)
 {
 	struct monome * newMonome = NULL;
@@ -15,6 +21,10 @@ struct monome* F_AjoutM (float coef, int puissance, struct monome *tete)
 	newMonome->suiv=tete;
 	return newMonome;
 }
+*/
+
+//Procédure Ajout du premier monome
+
 void P_AjoutM (float coef, int puissance, struct monome **tete)
 {
 	struct monome * newMonome = NULL;
@@ -24,28 +34,25 @@ void P_AjoutM (float coef, int puissance, struct monome **tete)
 	newMonome->suiv=*tete;
 	*tete = newMonome;
 }
-struct monome* ajout_queue (float coef, int puissance, struct monome *queue)
-{
-	struct monome * newMonome = NULL;
-	newMonome=malloc(sizeof(struct monome));
-	newMonome->c=coef;
-	newMonome->e=puissance;
-	newMonome->suiv = NULL;
-	if (queue != NULL) {
-		queue->suiv = newMonome;
-	}
-	return newMonome;
-}
+
+//Fonction pour ajouter n'importe quel monome au polynome
+
 void AjoutM (float coef, int puissance, struct monome **tete)
 {
 	struct monome *temp = *tete;
 	struct monome *precedent = NULL;
+
+	//Ajout du premier monome
+	
 	if (temp == NULL)
 	{
 		P_AjoutM (coef, puissance, &*tete);
 		//printf("Done4\n");
 		return;
 	}
+
+	//Ajout d'un monome en tête
+
 	if (puissance > temp->e)
 	{
 		struct monome * newMonome = NULL;
@@ -57,14 +64,23 @@ void AjoutM (float coef, int puissance, struct monome **tete)
 		//printf("Done1\n");
 		return;
 		}
+
+	//Parcours de la liste pour insérer un monome
+
 	while(temp != NULL)
 	{
+
+		//Si la puissance existe déja, additione simplement les coef
+
 		if (puissance == temp->e) 
 		{
 			temp->c = temp->c + coef;
 			//printf("Done2\n");
 			break;
 		}
+
+		// Si il existe une puissance inférieur et supérieur insertion du monome
+
 		else if (puissance > temp->e && puissance < precedent->e)
 		{
 			struct monome * newMonome = NULL;
@@ -77,6 +93,9 @@ void AjoutM (float coef, int puissance, struct monome **tete)
 			printf("%d\n%d\n", temp->e, puissance);
 			break;
 		}
+
+		//Ajout en queue du monome si aucun monome inférieur
+
 		else if (temp->suiv == NULL)
 		{
 			struct monome * newMonome = NULL;
@@ -92,6 +111,9 @@ void AjoutM (float coef, int puissance, struct monome **tete)
 		temp = temp->suiv;
 	}
 }
+
+//Parcours du polynome et affichage
+
 void parcours (struct monome *tete)
 {
 	struct monome * temp = tete;
@@ -101,10 +123,11 @@ void parcours (struct monome *tete)
 		temp = temp->suiv;
 	}
 }
+
+//Affichage pour entré un monome
+
 void saisie_monome (int *coef, int *degre)
 {
-	int out_degre = 0;
-	int out_coef = 0;
 	printf("Ajout d'un monome à la chaine\n");
 	printf("Veuillez saisir le degré du monome.\nDegre: ");
 	scanf("%d",degre);
@@ -112,6 +135,9 @@ void saisie_monome (int *coef, int *degre)
 	scanf("%d",coef);
 	printf("\n");
 }
+
+//Menu de sélection des actions
+
 int menu()
 {
 	int choix=0;
@@ -127,6 +153,9 @@ int menu()
 	printf("\n");
 	return choix;
 }
+
+//Fonction pour additioner 2 polynome
+
 void ADD (struct monome *A, struct monome *B, struct monome **C)
 {	
 	struct monome * temp_A = A;
@@ -138,6 +167,9 @@ void ADD (struct monome *A, struct monome *B, struct monome **C)
 	}
 	*C = temp_B;
 }
+
+//Fonction pour multiplié 2 polynome
+
 void MUL (struct monome *A, struct monome *B, struct monome **C)
 {
 	struct monome * temp_A = A;
@@ -154,6 +186,9 @@ void MUL (struct monome *A, struct monome *B, struct monome **C)
 		temp_A = temp_A->suiv;
 	}
 }
+
+//Fonction principale
+
 int main()
 {
 	struct monome *tete = NULL;
