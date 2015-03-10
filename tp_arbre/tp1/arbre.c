@@ -1,16 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-struct noeud
-{
-	char *fr;
-	char *en;
-	struct noeud * filsG;
-	struct noeud * filsD;
-};
-typedef struct noeud Noeud;
-
+#include "arbre.h"
 
 Noeud *inserer(char *fr, char *en, Noeud * racine)
 {
@@ -31,12 +19,10 @@ Noeud *inserer(char *fr, char *en, Noeud * racine)
 	}
 	else if(strcmp(fr,racine->fr) < 0)
 	{
-		printf("filsG\n");
 		racine->filsG = inserer(fr, en, racine->filsG);
 	}
 	else if(strcmp(fr,racine->fr ) > 0)
 	{
-		printf("filsD\n");
 		racine->filsD = inserer(fr, en, racine->filsD);
 	}
 	else
@@ -46,15 +32,57 @@ Noeud *inserer(char *fr, char *en, Noeud * racine)
 	return racine;
 }
 
-
-int main ()
+char * traduction (char* fr, Noeud* racine)
 {
-Noeud * racine = NULL;
-racine = inserer("avion","plane",racine);
-printf("FR: %s\nEN: %s\n",racine->fr, racine->en);
-racine = inserer("age", "age", racine);
-printf("FR: %s\nEN: %s\n",racine->filsG->fr, racine->filsG->en);
-racine = inserer("noeud", "node", racine);
-printf("FR: %s\nEN: %s\n",racine->filsD->fr, racine->filsD->en);
-
+	if(strcmp(fr,racine->fr) < 0)
+	{
+		traduction(fr, racine->filsG);
+	}
+	else if(strcmp(fr,racine->fr ) > 0)
+	{
+		traduction(fr, racine->filsD);
+	}
+	else if(strcmp(fr,racine->fr ) == 0)
+	{
+		return racine->en;
+	}
+	else
+	{
+		printf("Se mot n'existe pas dans cette bibliotheque");
+	}
 }
+
+
+void affichage (Noeud* noeud)
+{
+	if (noeud != NULL)
+	{
+		printf("\n-----------------\n");
+		printf("%s\n",noeud->fr);
+		printf("%s\n",noeud->en);
+		if (noeud->filsD != NULL)
+		{
+			printf("%p\n",noeud->filsD);
+		}
+		if (noeud->filsG != NULL)
+		{
+			printf("%p\n",noeud->filsG);
+		}
+		printf("-----------------\n");
+	}
+}
+
+void parcoursGRD (Noeud* racine)
+{
+	affichage (racine);
+	if (racine->filsD != NULL)
+	{
+		parcoursGRD (racine->filsD);
+	}
+	if (racine->filsD != NULL)
+	{
+		parcoursGRD (racine->filsG);
+	}
+}
+
+
