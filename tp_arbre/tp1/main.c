@@ -1,16 +1,19 @@
 #include "arbre.h"
 
-int main ()
+int main (int argc , char *argv[])
 {
-Noeud * racine = NULL;
-racine = inserer("avion","plane",racine);
-printf("FR: %s\nEN: %s\n",racine->fr, racine->en);
-racine = inserer("age", "age", racine);
-printf("FR: %s\nEN: %s\n",racine->filsG->fr, racine->filsG->en);
-racine = inserer("noeud", "node", racine);
-printf("FR: %s\nEN: %s\n",racine->filsD->fr, racine->filsD->en);
-printf("%s\n", traduction("noeud",racine));
-printf("%s\n", traduction("age",racine));
-printf("%s\n", traduction("avion",racine));
-parcoursGRD(racine);
+	if (argc == 1)
+	{
+		printf("Erreur: Il faut passer le nom du fichier à ouvrir en argument.\n");
+		return 1;
+	}
+	int hauteur = 0;
+	Noeud * racine = NULL;
+	racine = creation(argv[1]);
+	printf("La hauteur de l'arbre est: %d\n",hauteur_arbre (racine));
+	DSWBalancingAlgorithm(racine);
+	printf("La hauteur de l'arbre est: %d\n",hauteur_arbre (racine));
+	libere_noeud(racine);
+
+	return 0;
 }
