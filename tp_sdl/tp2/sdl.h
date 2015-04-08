@@ -10,7 +10,7 @@
 #define ROACH_SPEED		20.0	/* pixels/tour */
 #define MAX_STEPS		50	/* nb de deplacements max avant
 						   changement d'orientation */ 
-#define DELAI_P_TOUR		20  // en millisecondes
+#define DELAI_P_TOUR		0  // en millisecondes
 #define MAX_ROACHES		20	/* nb maxi de cafards */
 #define X_INIT_TAPIS		100
 #define Y_INIT_TAPIS		100
@@ -44,3 +44,4 @@ void MoveRoaches ( Roach *roaches, int nbRoach, float roachSpeed, SDL_Surface *e
 
 SDL_Surface *LoadImage ( char * img_filename, int x, int y );
 void DrawImage (SDL_Surface *img, SDL_Surface *ecran);
+int MarkHiddenRoaches(Roach *roaches,int nbRoaches,SDL_Surface *rect);
